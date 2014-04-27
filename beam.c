@@ -91,6 +91,8 @@ void init_chikubi_color()
 
 void print_chikubi()
 {
+  move(LINES/2, 0);
+
   printw(" | ");
 
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_PINK));
@@ -134,7 +136,7 @@ int beam(int t)
   print_chikubi();
   for (i = 0; i < t && i < COLS; i++) {
     if (disp[i]) {
-      mvaddch(0, i, wave);
+      mvaddch(LINES/2, i, wave);
       end_flag = 0;
     }
   }
