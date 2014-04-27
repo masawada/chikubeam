@@ -26,7 +26,7 @@ int BEAM_COUNT = 3;
 int COLOR      = 0;
 int SHAPE      = 0;
 int DELAY      = 80000;
-int WAVE_TYPE   = 0;
+int WAVE_TYPE  = 0;
 
 // functions
 void option(int argc, char *argv[]);
@@ -108,11 +108,11 @@ int beam(int t)
   int c = BEAM_COUNT, i, disp[t], end_flag = 1;
   char wave = (WAVE_TYPE)? '~' : '-';
 
-  for(i = 0; i < t; i++) disp[i] = 0;
+  for (i = 0; i < t; i++) disp[i] = 0;
 
   i = t;
   while (c-- && i > sp - 1) {
-    if(i == sp) {
+    if (i == sp) {
       disp[i-1] = 1; disp[i-5] = 1;
     } else if (t == sp + 1) {
       disp[i-1] = 1; disp[i-5] = 1;
@@ -125,9 +125,7 @@ int beam(int t)
     i -= 10;
   }
 
-  // print
   print_chikubi();
-
   for (i = 0; i < t && i < COLS; i++) {
     if (disp[i]) {
       mvaddch(0, i, wave);
@@ -135,7 +133,7 @@ int beam(int t)
     }
   }
 
-  if(end_flag) return ERR;
+  if (end_flag) return ERR;
   return OK;
 }
 
