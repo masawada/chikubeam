@@ -17,7 +17,6 @@
 //  | o   o |  --- ---
 
 // options
-int ONE_LINE   = 0;
 int SIN_WAVE   = 0;
 int BEAM_COUNT = 3;
 int DELAY      = 50000;
@@ -49,9 +48,8 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "osc:")) != -1) {
+  while ((result = getopt(argc, argv, "sc:")) != -1) {
     switch (result) {
-      case 'o': ONE_LINE = 1; break;
       case 's': SIN_WAVE = 1; break;
       case 'c': BEAM_COUNT = atoi(optarg); break;
     }
@@ -64,8 +62,7 @@ int beam(int t)
   t += sp;
 
   int c = BEAM_COUNT, i, disp[t], end_flag = 1;
-  char ch[2] = {' ', '-'};
-
+  char wave = (SIN_WAVE)? '~' : '-';
 
   for(i = 0; i < t; i++) disp[i] = 0;
 
@@ -88,7 +85,7 @@ int beam(int t)
   printw(" | o   o |");
   for (i = 0; i < t && i < COLS; i++) {
     if (disp[i]) {
-      mvaddch(0, i, ch[1]);
+      mvaddch(0, i, wave);
       end_flag = 0;
     }
   }
