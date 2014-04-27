@@ -41,11 +41,17 @@ int main(int argc, char *argv[])
   option(argc, argv);
 
   initscr();
+  noecho();
+  curs_set(0);
+  nodelay(stdscr, TRUE);
+  leaveok(stdscr, TRUE);
+  scrollok(stdscr, FALSE);
+
   init_chikubi_color();
 
   // beam
   while (true) {
-    clear();
+    erase();
     if (beam(t++) == ERR) break;
     refresh();
     usleep(DELAY);
@@ -136,4 +142,3 @@ int beam(int t)
   if (end_flag) return ERR;
   return OK;
 }
-
