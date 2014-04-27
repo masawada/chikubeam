@@ -1,3 +1,6 @@
+// beam.c - beam! beam!
+// Copyright (c) 2014 Masayoshi Wada <developer@andantesoftware.com>
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
