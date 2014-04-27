@@ -19,7 +19,7 @@
 // options
 int SIN_WAVE   = 0;
 int BEAM_COUNT = 3;
-int DELAY      = 50000;
+int DELAY      = 80000;
 
 // functions
 void option(int argc, char *argv[]);
@@ -48,10 +48,11 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "sc:")) != -1) {
+  while ((result = getopt(argc, argv, "c:fs")) != -1) {
     switch (result) {
-      case 's': SIN_WAVE = 1; break;
       case 'c': BEAM_COUNT = atoi(optarg); break;
+      case 'f': DELAY = 40000; break;
+      case 's': SIN_WAVE = 1; break;
     }
   }
 }
