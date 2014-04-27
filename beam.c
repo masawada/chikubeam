@@ -1,6 +1,11 @@
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <curses.h>
+
+// chikubi color
+#define CHIKUBI_DEFAULT 0
+#define CHIKUBI_PINK 1
 
 // $ chikubeam
 //  | o   o |
@@ -17,12 +22,15 @@
 //  | o   o |  --- ---
 
 // options
-int SIN_WAVE   = 0;
 int BEAM_COUNT = 3;
+int COLOR      = 0;
 int DELAY      = 80000;
+int SIN_WAVE   = 0;
 
 // functions
 void option(int argc, char *argv[]);
+void init_chikubi_color();
+void print_chikubi();
 int beam(int t);
 
 int main(int argc, char *argv[])
@@ -32,6 +40,7 @@ int main(int argc, char *argv[])
   option(argc, argv);
 
   initscr();
+  init_chikubi_color();
 
   // beam
   while (true) {
@@ -48,13 +57,37 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "c:fs")) != -1) {
+  while ((result = getopt(argc, argv, "cfn:s")) != -1) {
     switch (result) {
-      case 'c': BEAM_COUNT = atoi(optarg); break;
+      case 'c': COLOR = 1; break;
       case 'f': DELAY = 40000; break;
+      case 'n': BEAM_COUNT = atoi(optarg); break;
       case 's': SIN_WAVE = 1; break;
     }
   }
+}
+
+void init_chikubi_color()
+{
+  if (!COLOR) return;
+
+  if (has_colors() == FALSE || start_color() == ERR) {
+    endwin();
+    fprintf(stderr, "chikubi-color initialization failed.");
+    exit(EXIT_FAILURE);
+  }
+
+  init_pair(CHIKUBI_DEFAULT, COLOR_WHITE, COLOR_BLACK);
+  init_pair(CHIKUBI_PINK, COLOR_MAGENTA, COLOR_BLACK);
+}
+
+void print_chikubi()
+{
+  printw(" | ");
+  if (COLOR) attrset(COLOR_PAIR(CHIKUBI_PINK));
+  printw("*   *");
+  if (COLOR) attrset(COLOR_PAIR(CHIKUBI_DEFAULT));
+  printw(" | ");
 }
 
 int beam(int t)
@@ -83,7 +116,8 @@ int beam(int t)
   }
 
   // print
-  printw(" | o   o |");
+  print_chikubi();
+
   for (i = 0; i < t && i < COLS; i++) {
     if (disp[i]) {
       mvaddch(0, i, wave);
