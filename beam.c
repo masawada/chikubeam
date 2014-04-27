@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <curses.h>
 
-#define DELAY 80000
-
+// $ chikubeam
 //  | o   o |
 //  | o-  o-|
 //  | o-- o--
@@ -21,6 +20,7 @@
 int ONE_LINE   = 0;
 int SIN_WAVE   = 0;
 int BEAM_COUNT = 3;
+int DELAY      = 50000;
 
 // functions
 void option(int argc, char *argv[]);
@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 
   initscr();
 
+  // beam
   while (true) {
     clear();
     if (beam(t++) == ERR) break;
@@ -63,7 +64,7 @@ int beam(int t)
   t += sp;
 
   int c = BEAM_COUNT, i, disp[t], end_flag = 1;
-  char ch[2] = {' ', '~'};
+  char ch[2] = {' ', '-'};
 
 
   for(i = 0; i < t; i++) disp[i] = 0;
@@ -83,12 +84,16 @@ int beam(int t)
     i -= 10;
   }
 
-  for(i = 0; i < t && i < COLS; i++) {
-    mvaddch(0, i, ch[disp[i]]);
+  // print
+  printw(" | o   o |");
+  for (i = 0; i < t && i < COLS; i++) {
+    if (disp[i]) {
+      mvaddch(0, i, ch[1]);
+      end_flag = 0;
+    }
   }
 
   if(end_flag) return ERR;
-
   return OK;
 }
 
