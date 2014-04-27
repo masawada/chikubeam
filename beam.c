@@ -24,8 +24,9 @@
 // options
 int BEAM_COUNT = 3;
 int COLOR      = 0;
+int SHAPE      = 0;
 int DELAY      = 80000;
-int SIN_WAVE   = 0;
+int WAVE_TYPE   = 0;
 
 // functions
 void option(int argc, char *argv[]);
@@ -57,12 +58,13 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "cfn:s")) != -1) {
+  while ((result = getopt(argc, argv, "cfn:sw")) != -1) {
     switch (result) {
       case 'c': COLOR = 1; break;
       case 'f': DELAY = 40000; break;
       case 'n': BEAM_COUNT = atoi(optarg); break;
-      case 's': SIN_WAVE = 1; break;
+      case 's': SHAPE = 1; break;
+      case 'w': WAVE_TYPE = 1; break;
     }
   }
 }
@@ -84,9 +86,17 @@ void init_chikubi_color()
 void print_chikubi()
 {
   printw(" | ");
+
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_PINK));
-  printw("*   *");
+
+  if (SHAPE) {
+    printw("*   *");
+  } else {
+    printw("o   o");
+  }
+
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_DEFAULT));
+
   printw(" | ");
 }
 
@@ -96,7 +106,7 @@ int beam(int t)
   t += sp;
 
   int c = BEAM_COUNT, i, disp[t], end_flag = 1;
-  char wave = (SIN_WAVE)? '~' : '-';
+  char wave = (WAVE_TYPE)? '~' : '-';
 
   for(i = 0; i < t; i++) disp[i] = 0;
 
