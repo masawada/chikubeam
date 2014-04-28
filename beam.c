@@ -30,6 +30,7 @@ int COLOR      = 0;
 int SHAPE      = 0;
 int DELAY      = 80000;
 int WAVE_TYPE  = 0;
+int GIRL       = 0;
 
 // functions
 void option(int argc, char *argv[]);
@@ -67,10 +68,11 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "cfn:sw")) != -1) {
+  while ((result = getopt(argc, argv, "cfgn:sw")) != -1) {
     switch (result) {
       case 'c': COLOR = 1; break;
       case 'f': DELAY = 40000; break;
+      case 'g': GIRL = 1; break;
       case 'n': BEAM_COUNT = atoi(optarg); break;
       case 's': SHAPE = 1; break;
       case 'w': WAVE_TYPE = 1; break;
@@ -96,7 +98,10 @@ void print_chikubi()
 {
   move(LINES/2, 0);
 
-  printw(" | ");
+  if (GIRL)
+    printw(" ( ");
+  else
+    printw(" | ");
 
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_PINK));
 
@@ -108,7 +113,10 @@ void print_chikubi()
 
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_DEFAULT));
 
-  printw(" | ");
+  if (GIRL)
+    printw(" ) ");
+  else
+    printw(" | ");
 }
 
 int beam(int t)
