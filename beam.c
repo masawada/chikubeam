@@ -10,6 +10,7 @@
 #define CHIKUBI_DEFAULT 0
 #define CHIKUBI_PINK 1
 
+
 // $ chikubeam
 //  | o   o |
 //  | o-  o-|
@@ -32,8 +33,12 @@ int DELAY      = 80000;
 int WAVE_TYPE  = 0;
 int GIRL       = 0;
 
+/* The name this program was run with. */
+char *program_name;
+
 // functions
 void option(int argc, char *argv[]);
+void help();
 void init_chikubi_color();
 void print_chikubi();
 int beam(int t);
@@ -41,6 +46,8 @@ int beam(int t);
 int main(int argc, char *argv[])
 {
   int t = 0;
+
+  program_name = argv[0];
 
   option(argc, argv);
 
@@ -68,16 +75,32 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "cfgn:sw")) != -1) {
+  while ((result = getopt(argc, argv, "cfghn:sw")) != -1) {
     switch (result) {
       case 'c': COLOR = 1; break;
       case 'f': DELAY = 40000; break;
       case 'g': GIRL = 1; break;
+      case 'h': help(); break;
       case 'n': BEAM_COUNT = atoi(optarg); break;
       case 's': SHAPE = 1; break;
       case 'w': WAVE_TYPE = 1; break;
     }
   }
+}
+
+void help()
+{
+  printf ("Usage: %s [OPTION]... \n", program_name);
+  fputs  ("Chikubeam is a laser beam emitted from nipples.\n\n", stdout);
+  fputs  ("\
+    -c        change the nipple's color\n\
+    -f        the beam is emitted twice as fast as normal\n\
+    -g        girl mode\n\
+    -n NUM    the beam is emitted NUM times\n\
+    -s        change the nipple's shape to 'star'\n\
+    -w        change the beam's appearance to '~'\n\
+    -h        display this help and exit\n", stdout);
+  exit(EXIT_SUCCESS);
 }
 
 void init_chikubi_color()
@@ -121,7 +144,7 @@ void print_chikubi()
 
 int beam(int t)
 {
-  int sp = 9; // start position 
+  int sp = 9; // start position
   t += sp;
 
   int c = BEAM_COUNT, i, disp[t], end_flag = 1;
