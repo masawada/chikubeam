@@ -31,7 +31,7 @@ int COLOR      = 0;
 int SHAPE      = 0;
 int DELAY      = 80000;
 int WAVE_TYPE  = 0;
-int GIRL       = 0;
+int ROUND      = 0;
 
 /* The name this program was run with. */
 char *program_name;
@@ -75,11 +75,11 @@ int main(int argc, char *argv[])
 void option(int argc, char *argv[])
 {
   int result;
-  while ((result = getopt(argc, argv, "cfghn:sw")) != -1) {
+  while ((result = getopt(argc, argv, "cfrhn:sw")) != -1) {
     switch (result) {
       case 'c': COLOR = 1; break;
       case 'f': DELAY = 40000; break;
-      case 'g': GIRL = 1; break;
+      case 'r': ROUND = 1; break;
       case 'h': help(); break;
       case 'n': BEAM_COUNT = atoi(optarg); break;
       case 's': SHAPE = 1; break;
@@ -95,7 +95,7 @@ void help()
   fputs  ("\
     -c        change the nipple's color\n\
     -f        the beam is emitted twice as fast as normal\n\
-    -g        girl mode\n\
+    -r        round mode\n\
     -n NUM    the beam is emitted NUM times\n\
     -s        change the nipple's shape to 'star'\n\
     -w        change the beam's appearance to '~'\n\
@@ -121,7 +121,7 @@ void print_chikubi()
 {
   move(LINES/2, 0);
 
-  if (GIRL)
+  if (ROUND)
     printw(" ( ");
   else
     printw(" | ");
@@ -136,7 +136,7 @@ void print_chikubi()
 
   if (COLOR) attrset(COLOR_PAIR(CHIKUBI_DEFAULT));
 
-  if (GIRL)
+  if (ROUND)
     printw(" ) ");
   else
     printw(" | ");
